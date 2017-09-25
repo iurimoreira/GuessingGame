@@ -9,42 +9,45 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.Random;
 
 
 public class MainActivity extends Activity {
 
-    Button button ;
-    Button button2;
+    Button btTentarSorte ;
+    Button btJogarNovamente;
+    TextView textResultado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addListenerOnButton();
-        addListenerOnButton2();
+        tentarSorte();
+        jogarNovamente();
     }
 
-    public static int getRandom() {
+    public static boolean gerarCartaRandomicamente() {
         Random random = new Random();
-        boolean isOne = random.nextBoolean();
-        if (isOne) return 1;
-        else return 2;
+        boolean isTrue = random.nextBoolean();
+        if (isTrue) return true;
+        else return false;
     }
 
-    public void addListenerOnButton() {
+    public void tentarSorte() {
+        btTentarSorte = (Button) findViewById(R.id.btConfirmar);
+        textResultado = (TextView) findViewById(R.id.textResultado);
 
-        button = (Button) findViewById(R.id.btConfirmar);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        btTentarSorte.setOnClickListener(new View.OnClickListener() {
             ImageView imgCarta1 = (ImageView) findViewById(R.id.carta1);
             ImageView imgCarta2 = (ImageView) findViewById(R.id.carta2);
             ImageView imgCarta3 = (ImageView) findViewById(R.id.carta3);
 
             @Override
             public void onClick(View arg0) {
+
                 RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
 
                 int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -62,42 +65,47 @@ public class MainActivity extends Activity {
                     alertDialog.show();
                 }
                 else{
-                    int r = MainActivity.getRandom();
+                    boolean isTrue = MainActivity.gerarCartaRandomicamente();
                     if (checkedRadioButtonId == R.id.radioButton1) {
 
-                        if(r==2){
+                        if(isTrue){
                             imgCarta1.setImageResource(R.mipmap.cartacoringa);
+                            textResultado.setText("Perdeu playboy!");
                         }else{
                             imgCarta1.setImageResource(R.mipmap.cartanormal);
+                            textResultado.setText("Ganhou!");
                         }
                     }
                     if (checkedRadioButtonId == R.id.radioButton2) {
-                        if(r==2){
+                        if(isTrue){
                             imgCarta2.setImageResource(R.mipmap.cartacoringa);
+                            textResultado.setText("Perdeu playboy!");
                         }else{
                             imgCarta2.setImageResource(R.mipmap.cartanormal);
+                            textResultado.setText("Ganhou!");
                         }
                     }
                     if (checkedRadioButtonId == R.id.radioButton3) {
-                        if(r==2){
+                        if(isTrue){
                             imgCarta3.setImageResource(R.mipmap.cartacoringa);
+                            textResultado.setText("Perdeu playboy!");
                         }else{
                             imgCarta3.setImageResource(R.mipmap.cartanormal);
+                            textResultado.setText("Ganhou!");
                         }
                     }
-                    button.setEnabled(false);
+                    btTentarSorte.setEnabled(false);
                 }
-
             }
-
         });
     }
 
-    public void addListenerOnButton2() {
+    public void jogarNovamente() {
 
-        button2 = (Button) findViewById(R.id.btResetar);
+        btJogarNovamente = (Button) findViewById(R.id.btResetar);
+        textResultado = (TextView) findViewById(R.id.textResultado);
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        btJogarNovamente.setOnClickListener(new View.OnClickListener() {
             ImageView imgCarta1 = (ImageView) findViewById(R.id.carta1);
             ImageView imgCarta2 = (ImageView) findViewById(R.id.carta2);
             ImageView imgCarta3 = (ImageView) findViewById(R.id.carta3);
@@ -108,24 +116,18 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
+                textResultado.setText("");
 
-                        imgCarta1.setImageResource(R.mipmap.cartafundo);
+                imgCarta1.setImageResource(R.mipmap.cartafundo);
+                imgCarta2.setImageResource(R.mipmap.cartafundo);
+                imgCarta3.setImageResource(R.mipmap.cartafundo);
 
-
-                        imgCarta2.setImageResource(R.mipmap.cartafundo);
-
-
-                        imgCarta3.setImageResource(R.mipmap.cartafundo);
-
-
-                button.setEnabled(true);
+                btTentarSorte.setEnabled(true);
 
                 rb1.setChecked(false);
                 rb2.setChecked(false);
                 rb3.setChecked(false);
-
             }
-
         });
     }
 }
